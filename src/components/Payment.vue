@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, watch, toRefs } from 'vue'
 
 // 単一なものは refを使う
 // const itemName1 = ref<string>('Desk')
@@ -40,13 +40,13 @@ const budget = 50000
 // 何らかの条件を元に、値を生成する時に使うのが Vueのcomputed
 // 条件分岐や計算など処理を用いて変数に値を格納する
 // computed の中にアロー関数を入れる
-const priceLabel = computed(() => {
-  if (item1.price > budget) {
-    return 'too expensive...'
-  } else {
-    return item1.price + ' yen'
-  }
-})
+// const priceLabel = computed(() => {
+//   if (item1.price > budget) {
+//     return 'too expensive...'
+//   } else {
+//     return item1.price + ' yen'
+//   }
+// })
 
 // 上記のcomputedを下記のように単純にitem1.priceに依存した処理をメソッド内に書いても反映されるが
 // Vueのcomputedを使うことで、キャッシュが効いたり動作が最適化されるメリットがあるとのことで、computedを使うことが推奨されている
@@ -57,6 +57,19 @@ const priceLabel = computed(() => {
 //     return item1.price + ' yen'
 //   }
 // }
+
+const priceLabel = ref<string>(item1.price + 'yen')
+// item1のようにリアクティブなオブジェクトのプロパティは、Vueとしてはリアクティブではないものと認識されるため
+// toRefs()にオブジェクトを渡して、そのプロパティをリアクティブな値として返すことで、watchの第一引数に各プロパティを設定させることができる
+const { price } = toRefs(item1)
+watch(price, () => {
+  if (price.value > budget) {
+    priceLabel.value = 'too expensive...'
+  } else {
+    priceLabel.value = price.value + ' yen'
+  }
+})
+
 </script>
 
 <template>
