@@ -6,15 +6,25 @@ const itemPrice1 = 40000
 const itemPrice2 = 20000
 
 const url1 = 'https://www.google.co.jp/'
+
+const buy = (itemName: string) => {
+  alert('Are you sure to buy ' + itemName + ' ??')
+}
+
+const input = (event: any) => {
+  console.log('event:', event.target.value)
+}
 </script>
 
 <template>
   <div class="container">
     <h1>Payment</h1>
+    <input v-on:input="input" />
     <div class="payment">
       <label>{{ itemName1 }}</label>
       <label>{{ itemPrice1 }}円</label>
       <a v-bind:href="url1">bought at...</a>
+      <button v-on:click="buy(itemName1)">BUY</button>
     </div>
     <div class="payment">
       <label>{{ itemName2 }}</label>
