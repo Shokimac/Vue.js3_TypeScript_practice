@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 
 // 単一なものは refを使う
 // const itemName1 = ref<string>('Desk')
@@ -34,6 +34,29 @@ const clear = () => {
   item1.name = ''
   item1.price = 0
 }
+
+const budget = 50000
+
+// 何らかの条件を元に、値を生成する時に使うのが Vueのcomputed
+// 条件分岐や計算など処理を用いて変数に値を格納する
+// computed の中にアロー関数を入れる
+const priceLabel = computed(() => {
+  if (item1.price > budget) {
+    return 'too expensive...'
+  } else {
+    return item1.price + ' yen'
+  }
+})
+
+// 上記のcomputedを下記のように単純にitem1.priceに依存した処理をメソッド内に書いても反映されるが
+// Vueのcomputedを使うことで、キャッシュが効いたり動作が最適化されるメリットがあるとのことで、computedを使うことが推奨されている
+// const getPriceLabel = () => {
+//   if (item1.price > budget) {
+//     return 'too expensive...'
+//   } else {
+//     return item1.price + ' yen'
+//   }
+// }
 </script>
 
 <template>
@@ -46,7 +69,10 @@ const clear = () => {
     <button v-on:click="clear">Clear</button>
     <div class="payment">
       <label>{{ item1.name }}</label>
-      <label>{{ item1.price }}円</label>
+      <!-- 下記のように三項演算子で書けるが、Vueの基本的な考え方として、template内にはロジックはあまり持たせない -->
+      <!-- <label>{{ item1.price > budget ? 'too expensive...' : item1.price }}</label> -->
+      <label>{{ priceLabel }}</label>
+      <!-- <label>{{ item1.price }}円</label> -->
       <a v-bind:href="url1">bought at...</a>
       <button v-on:click="buy(item1.name)">BUY</button>
     </div>
