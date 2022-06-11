@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const itemName1 = 'Desk'
+import { ref } from 'vue'
+
+const itemName1 = ref<string>('Desk')
 const itemName2 = 'Bike'
 
 const itemPrice1 = 40000
@@ -13,6 +15,7 @@ const buy = (itemName: string) => {
 
 const input = (event: any) => {
   console.log('event:', event.target.value)
+  itemName1.value = event.target.value
 }
 </script>
 
