@@ -11,6 +11,11 @@ const postTweet = () => {
   inputtingDescription.value = ''
   console.log('post...', tweets.value)
 }
+
+const deleteTweet = (id: number) => {
+  // filterの引数内 t には、tweetsの各要素が入る
+  tweets.value = tweets.value.filter(t => t.id !== id)
+}
 </script>
 
 <template>
@@ -21,11 +26,15 @@ const postTweet = () => {
       <button class="save-button" @click="postTweet()">post</button>
     </div>
     <div class="tweet-container">
-      <ul>
+      <!-- v-if とは別で、v-showを使って条件がtrueの時のみ表示させることもできる -->
+      <!-- <p v-show="tweets.length <= 0">No tweets have been added</p> -->
+      <p v-if="tweets.length <= 0">No tweets have been added</p>
+      <ul v-else>
         <!-- v-for の書き方は、取り出した中身を格納する変数 in 配列orオブジェクト で書く -->
         <!-- :key="tweet.id" で要素数分liタグを生成できる -->
         <li v-for="tweet in tweets" :key="tweet.id" class="tweet-list">
           <span>{{ tweet.description }}</span>
+          <button @click="deleteTweet(tweet.id)" class="delete-button">Delete</button>
         </li>
       </ul>
     </div>
