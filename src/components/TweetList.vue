@@ -9,8 +9,10 @@ type Tweet = {
 type Props = {
   tweets: Tweet[]
 }
-const deleteTweet = (id: number) => {
 
+const emit = defineEmits(['delete-tweet'])
+const deleteTweet = (id: number) => {
+  emit('delete-tweet', id)
 }
 
 defineProps<Props>()

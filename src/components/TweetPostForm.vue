@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, defineEmits } from 'vue'
 const inputtingDescription = ref<string>('')
 
+// 子から親へ値を伝搬するには、Emitsでイベント名を指定し、親のコンポーネント呼び出し部分でイベント名を記載する
+const emit = defineEmits(['post-tweet'])
 const postTweet = () => {
-
+  emit('post-tweet', inputtingDescription.value)
 }
+
 </script>
 
 <template>
