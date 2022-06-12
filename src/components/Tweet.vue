@@ -1,14 +1,24 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 // 静的な状態で v-forを使い一つ一つを取り出す
-const tweets = [{ id: '0', description: 'Hello, world!' }, { id: '1', description: 'This is second tweet.' }]
+// const tweets = [{ id: '0', description: 'Hello, world!' }, { id: '1', description: 'This is second tweet.' }]
+const tweets = ref([{ id: 0, description: 'Hello, world!' }, { id: 1, description: 'This is second tweet.' }])
+const inputtingDescription = ref<string>('')
+
+const postTweet = () => {
+  const tweet = { id: Math.random(), description: inputtingDescription.value }
+  tweets.value.push(tweet)
+  inputtingDescription.value = ''
+  console.log('post...', tweets.value)
+}
 </script>
 
 <template>
   <div class="container">
     <h1>Tweeter</h1>
     <div class="form-container">
-      <input />
-      <button class="save-button">post</button>
+      <input v-model="inputtingDescription" />
+      <button class="save-button" @click="postTweet()">post</button>
     </div>
     <div class="tweet-container">
       <ul>
@@ -63,6 +73,14 @@ input {
 
 .tweet-list {
   list-style: none;
+  margin-bottom: 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(204, 2219, 233);
+  padding: 8px 20px;
+  width: 300px;
 }
 
 .form-container {
